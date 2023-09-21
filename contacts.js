@@ -1,8 +1,4 @@
 const fs = require('fs');
-const rl = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
 const dataDir = './data';
 const dataPath = dataDir + '/contacts.json';
@@ -17,24 +13,23 @@ if (!fs.existsSync(dataPath)) {
 
 
 
-const input = (prompt) => {
-    return new Promise((resolve, reject) => {
-        rl.question(prompt, result => {
-            resolve(result);
-        });
-    });
-};
-
-const save = (nama, telp, email) => {
-    const data = { nama, telp, email };
+const save = (name, telp, email) => {
+    const data = { name, telp, email };
     const file = fs.readFileSync(dataPath, 'utf-8');
     const contacts = JSON.parse(file);
     
+    const duplicate = contacts.find((contact) => contact.name == name);
+    if (duplicate) {
+        console.log(`Contact with name ${name} already exists.`);
+        return false;
+    }
+    
     contacts.push(data);
     fs.writeFileSync(dataPath, JSON.stringify(contacts));
-    rl.close(); 
+    
+    console.log(`New contact added successfully.`);
 };
 
 
 
-module.exports = { input, save };
+module.exports = { save };

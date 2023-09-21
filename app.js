@@ -1,11 +1,29 @@
 const contacts = require('./contacts.js');
+const yargs = require('yargs');
 
-const main = async () => {
-    const name = await contacts.input('Name: ');
-    const telp = await contacts.input('Telp: ');
-    const email = await contacts.input('Email: ');
-    
-    contacts.save(name, telp, email);
-};
+yargs.command({
+    command: 'add', 
+    describe: 'Add new contact', 
+    builder: {
+        name: {
+            describe: 'Contact name', 
+            demandOption: true, 
+            type: 'string'
+        }, 
+        telp: {
+            describe: 'Phone number', 
+            demandOption: false, 
+            type: 'string'
+        }, 
+        email: {
+            describe: 'email address', 
+            demandOption: false, 
+            type: 'string'
+        }
+    }, 
+    handler(argv) {
+        contacts.save(argv.name, argv.telp, argv.email);
+    }
+});
 
-main();
+yargs.parse();
