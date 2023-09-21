@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const dataDir = './data';
 const dataPath = dataDir + '/contacts.json';
@@ -20,14 +21,14 @@ const save = (name, telp, email) => {
     
     const duplicate = contacts.find((contact) => contact.name == name);
     if (duplicate) {
-        console.log(`Contact with name ${name} already exists.`);
+        console.log(chalk.bgRed.white.bold(`Contact with name ${name} already exists.`));
         return false;
     }
     
     contacts.push(data);
     fs.writeFileSync(dataPath, JSON.stringify(contacts));
     
-    console.log(`New contact added successfully.`);
+    console.log(chalk.green.inverse.bold(`New contact added successfully.`));
 };
 
 
