@@ -49,4 +49,19 @@ yargs.command({
     }
 });
 
+yargs.command({
+    command: 'detail', 
+    describe: 'Contact detail', 
+    builder: {
+        name: {
+            describe: 'Contact name', 
+            demandOption: true, 
+            type: 'string'
+        }
+    }, 
+    handler(argv) {
+        contacts.detail(argv.name);
+    }
+});
+
 yargs.parse();
