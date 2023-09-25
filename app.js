@@ -24,6 +24,21 @@ yargs.command({
     handler(argv) {
         contacts.save(argv.name, argv.telp, argv.email);
     }
+}).demandCommand();
+
+yargs.command({
+    command: 'delete', 
+    describe: 'Delete contact', 
+    builder: {
+        name: {
+            describe: 'Contact name', 
+            demandOption: true, 
+            type: 'string'
+        }
+    }, 
+    handler(argv) {
+        contacts.remove(argv.name);
+    }
 });
 
 yargs.parse();
