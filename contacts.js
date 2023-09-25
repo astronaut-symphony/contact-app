@@ -70,6 +70,12 @@ const remove = (name) => {
     console.log(chalk.green.inverse.bold(`Contact ${name} successfully deleted. 200`));
 };
 
+const list = () => {
+    const contacts = load();
+    console.log(chalk.yellow.inverse.bold('Contact list:'));
+    contacts.forEach((contact, i) => console.log(`${i+1}. ${contact.name}`));
+};
 
 
-module.exports = { save, remove };
+
+module.exports = { save, remove, list };

@@ -41,4 +41,12 @@ yargs.command({
     }
 });
 
+yargs.command({
+    command: 'list', 
+    describe: 'Show contact list', 
+    handler() {
+        contacts.list();
+    }
+});
+
 yargs.parse();
