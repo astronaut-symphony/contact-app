@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <% if (!contact) { %>
+                <div class="alert alert-danger" role="alert">
+                    Contact not found. 404 <br><a href="/contact" class="alert-link">back</a>
+                </div>
+            <% } else { %>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= contact.name %></h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary"><%= contact.telp %></h6>
+                        <p class="card-text"><%= contact.email %></p>
+                        <a href="/contact" class="card-link">back</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
