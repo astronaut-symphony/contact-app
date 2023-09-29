@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 
 const { body, validationResult } = require('express-validator');
-const { loadContacts, detailContact, addContact, nameCheck } = require('./utils/contact.js');
+const { loadContacts, detailContact, addContact, deleteContact, updateContacts, nameCheck } = require('./utils/contact.js');
 
 const app = express();
 const port = 3000;
@@ -81,6 +81,57 @@ app.get('/contact/new', (req, res) => {
     });
 });
 
+app.get('/contact/edit/:name', (req, res) => {
+    const contact = detailContact(req.params.name);
+    
+    res.render('contact-edit', {
+        layout: 'layouts/main',
+        title: 'Edit Contact', 
+        contact
+    });
+});
+
+app.post('/contact/edit',
+    [
+        body('name').custom((name, {req}) => {
+            const duplicate = nameCheck(name);
+            if (duplicate && req.body.prevName !== name) {
+                throw new Error('Contact with this name already exists.');
+            }
+            return true;
+        }),
+        body('telp').isMobilePhone('id-ID').withMessage('Phone number is invalid.'),
+        body('email').isEmail().withMessage('Email address is invalid.')
+    ],
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.render('contact-edit', {
+                layout: 'layouts/main',
+                title: 'Edit Contact',
+                errors: errors.array(), 
+                contact: req.body
+            });
+        } else {
+            updateContacts(req.body);
+            req.flash('info', 'Contact updated successfully.');
+            res.redirect('/contact');
+        }
+    }
+);
+
+app.get('/contact/delete/:name', (req, res) => {
+    const contact = nameCheck(req.params.name);
+    if (!contact) {
+        res.status(404);
+        res.send('<h1>Contact not found. 404</h1>');
+    } else {
+        deleteContact(req.params.name);
+        req.flash('info', 'Contact deleted successfully.');
+        res.redirect('/contact');
+    }
+});
+
 app.get('/contact/:name', (req, res) => {
     const contact = detailContact(req.params.name);
     
@@ -101,5 +152,7 @@ app.get('/about', (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Server is running on http://127.0.0.1:${port}`);
+    const currentDate = new Date();
+    const currentTime = currentDate.toLocaleTimeString('en-US', { hour12: false }); 
+    console.log(`${currentTime} -> Server is running on http://127.0.0.1:${port}`);
 });

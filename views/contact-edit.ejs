@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h2>Add new contact</h2>
+            <h2>Edit contact</h2>
             
             <% if (typeof errors != 'undefined') { %>
                 <div class="alert alert-danger" role="alert">
@@ -13,20 +13,21 @@
                 </div>
             <% } %>
             
-            <form method="post" action="/contact">
+            <form method="post" action="/contact/edit">
+                <input type="hidden" name="prevName" value ="<%= contact.prevName || contact.name %>">
                 <div class="mb-3">
                     <label for="inputName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="inputName" name="name" required autocomplete="off">
+                    <input type="text" class="form-control" id="inputName" name="name" value ="<%= contact.name %>" required autocomplete="off">
                 </div>
                 <div class="mb-3">
                     <label for="inputPhone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="inputPhone" name="telp" required autocomplete="off">
+                    <input type="tel" class="form-control" id="inputPhone" name="telp" value ="<%= contact.telp %>" required autocomplete="off">
                 </div>
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" name="email" required autocomplete="off">
+                    <input type="email" class="form-control" id="inputEmail" name="email" value ="<%= contact.email %>" required autocomplete="off">
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
