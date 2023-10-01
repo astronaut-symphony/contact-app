@@ -8,7 +8,7 @@ const { body, validationResult } = require('express-validator');
 const { loadContacts, detailContact, addContact, deleteContact, updateContacts, nameCheck } = require('./utils/contact.js');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 
 
